@@ -43,6 +43,7 @@ class TrainingArguments(transformers.TrainingArguments):
     find_unused_parameters: bool = field(default=False)
     save_model: bool = field(default=False)
     report_to: Optional[str] = field(default='none')
+    
 def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: str):
     """Collects the state dict and dump to disk."""
     state_dict = trainer.model.state_dict()
@@ -50,11 +51,6 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: st
         cpu_state_dict = {key: value.cpu() for key, value in state_dict.items()}
         del state_dict
         trainer._save(output_dir, state_dict=cpu_state_dict) 
-
-
-
-
-
 
 @dataclass
 class DataCollatorForSupervisedDataset(object):
@@ -114,7 +110,6 @@ def train():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     training_args = parser.parse_args_into_dataclasses()
     
-    #更换tokenizer的部分
     MODEL_NAME_OR_PATH = './esm_model' 
     tokenizer =  AutoTokenizer.from_pretrained(MODEL_NAME_OR_PATH,padding_side='right',use_fast=True,
                                                model_max_length=training_args.model_max_length,
@@ -122,7 +117,7 @@ def train():
     
     train_data_path = './cls_data/SA_train.csv'
     test_data_path = './cls_data/SA_test.csv'
-    # 加载数据集
+  
     train_dataset = load_dataset('csv', data_files=train_data_path)['train']
     test_dataset = load_dataset('csv', data_files=test_data_path)['train']
 
