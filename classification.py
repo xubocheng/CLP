@@ -52,20 +52,7 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: st
         trainer._save(output_dir, state_dict=cpu_state_dict) 
 
 
-"""
-Get the reversed complement of the original DNA sequence.
-"""
 
-
-"""
-Transform a dna sequence to k-mer string
-"""
-
-
-
-"""
-Load or generate k-mer string for each DNA sequence. The generated k-mer string will be saved to the same directory as the original data with the same name but with a suffix of "_{k}mer".
-"""
 
 
 
